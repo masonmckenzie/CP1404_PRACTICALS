@@ -1,39 +1,45 @@
 """
-CP1404/CP5632 Practical
-State names in a dictionary
-File needs reformatting
+CP1404
+Name: Mason McKenzie
+
 """
-import csv
-from prac_07.myguitars import guitars
+FILENAME = "guitars.csv"
+INDEX_PRICE = 1
+INDEX_YEAR = 2
 
 
 def main():
-    """The program below Guitar program, with implemented Guitar class."""
-    guitars = []
+    records = get_records(FILENAME)
+    year_of_release, price = process_records(records)
+    display_results(year_of_release, price)
 
-    print("my guitars:")
-    name = input("name: ")
-    while name != "":
-        year = int(input("Year: "))
-        cost = float(input("Cost: $"))
-        guitar_to_add = Guitar(name, year, cost)
-        guitars.append(guitar_to_add)
-        print(guitar_to_add, "added.")
-        name = input("Name: ")
 
-    guitars.append(Guitar("Gibson L-5 CES", 1922, 16035.40))
-    guitars.append(Guitar("Line 6 JTV-59", 2010, 1512.9))
+def process_records(records):
+    year_of_release = {}
+    price = set()
+    for record in records:
+        price.add(record[INDEX_PRICE])
+        try:
+            year_of_release[record[INDEX_PRICE]] += 1
+        except KeyError:
+            year_of_release[record[INDEX_PRICE]] = 1
+    return year_of_release, price
 
-    if guitars:  # The if statement contains lists and strings, for True when non-empty
-        guitars.sort()
-        print("These are my guitars:")
-        for i, guitar in enumerate(guitars, 1):
-            vintage_string = ""
-            if guitar.is_vintage():
-                vintage_string = " (vintage)"
-            print("Guitar {0}: {1.name:>20} ({1.year}), worth ${1.cost:10,.2f}{2}".format(i, guitar, vintage_string))
-    else:
-        print("You have zero guitars. How about you get a new one ?????")
+
+def display_results(year_of_release, price):
+    print(f"\nThese {len(year_of_release)} are the guitars sorted from oldest to newest: ")
+    print(", ".join(year_of_release for year_of_release in sorted(year_of_release)))
+
+
+def get_records(filename):
+    records = []
+    with open(filename, "r", encoding="utf-8-sig") as in_file:
+        in_file.readline()  # Remove header
+        for line in in_file:
+            parts = line.strip().split(",")
+            records.append(parts)
+    return records
 
 
 main()
+
