@@ -1,47 +1,30 @@
+
+"""
+CP1404/CP5632 Practical
+Mason McKenzie
+"""
+
+
 import csv
 from collections import namedtuple
 
 from project_management import ProjectManagement
 
-def main():
-    projects = []
+class Project:
+    def __init__(self, name, date, priority, cost, percentage):
+        self.name = name
+        self.start_date = date
+        self.priority = priority
+        self.cost = cost
+        self.percentage = percentage
 
-    # opening the file in read mode
-    my_file = open("projects.txt", "r")
+    def __lt__(self, other):
+        return self.priority < other.priority
 
-    # reading the file
-    data = my_file.read()
+    def __str__(self):
+        return f"{self.name}\t{self.start_date.strftime('%date/%month/%Year')}\t{self.priority}\t{self.cost}\t{self.percentage}"
 
-    # replacing end of line('/n') with ' ' and
-    # splitting the text it further when '.' is seen.
-    data_into_list = data.replace('\n', ' ').split(".")
 
-    # printing the data
-    print(data_into_list)
-    my_file.close()
-    # Close the file as soon as we've finished reading it
-    # Loop through and display all languages (using their str method)
-    # for project in projects:
-    #     print(project)
-def menu():
-    print(f"Menu: \n{'(L)oad Projects'} \n{'(S)ave Projects'} \n{'(D)isplay Projects'} \n{'(F)ilter Projects by date'} \n{'(A)dd Project'} \n{'(U)pdate Project'} \n{'(Q)uit'}")
-    option = input(">>>").upper()
-    if option == "L":
-        print("You have chosen Load")
-        main()
-    elif option == "S":
-        print("You have chosen Save")
-    elif option == "D":
-        print("You have chosen Display")
-    elif option == "F":
-        print("You have chosen Filter")
-    elif option == "A":
-        print("You have chosen Add")
-    elif option == "U":
-        print("You have chosen Update")
-    elif option == "Q":
-        print("You have chosen Quit")
-    else:
-        print("Please choose valid option")
 
-menu()
+    def project_finished(self):
+        return self.percentage == 100
