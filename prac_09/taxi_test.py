@@ -3,6 +3,7 @@ CP1404/CP5632 Practical
 Mason McKenzie
 """
 
+
 from prac_09.taxi import Taxi
 
 my_taxi = Taxi("PRIUS, 1", 100)
